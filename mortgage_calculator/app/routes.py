@@ -5,8 +5,14 @@ from app.calculator import calculate_mortgage_amortization
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
-def home():
-    return render_template('index.html')
+@bp.route('/amortization')
+def amortization_page():
+    return render_template('amortization.html')
+
+@bp.route('/percentage')
+def percentage_page():
+    return render_template('percentage.html')
+
 
 @bp.route('/favicon.ico')
 def favicon():
@@ -52,3 +58,23 @@ def health_check():
         "status": "healthy",
         "tunnel_url": ngrok.get_tunnels()[0].url() if ngrok.get_tunnels() else None
     })
+
+@bp.route('/api/percentage-difference', methods=['GET'])
+def calculate_percentage_difference():
+    try:
+        value1 = float(request.args.get('value1'))
+        value2 = float(request.args.get('value2'))
+        
+        if value1 == 0:
+            return jsonify({'error': 'First value cannot be zero'}), 400
+            
+        percentage_diff = ((value2 - value1) / abs(value1)) * 100
+        
+        return jsonify({
+            'value1': value1,
+            'value2': value2,
+            'percentage_difference': percentage_diff
+        })
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Invalid input values'}), 400
+

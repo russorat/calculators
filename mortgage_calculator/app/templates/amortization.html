@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Mortgage Calculator{% endblock %}
+
+{% block content %}
+<h1>Mortgage Calculator</h1>
+<div class="calculator-form">
+    <div class="form-group">
+        <label for="loanAmount">Loan Amount ($):</label>
+        <input type="number" id="loanAmount" required>
+    </div>
+    <div class="form-group">
+        <label for="interestRate">Annual Interest Rate (%):</label>
+        <input type="number" id="interestRate" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="loanTerm">Loan Term (years):</label>
+        <input type="number" id="loanTerm" required>
+    </div>
+    <button id="calculateBtn" class="calculate-btn">Calculate</button>
+    <button id="downloadBtn" class="download-btn" style="display: none;">Download CSV</button>
+</div>
+
+<div id="results" class="results" style="display: none;">
+    <h2>Results</h2>
+    <div class="result-cards">
+        <div class="result-card">
+            <h3>Monthly Payment</h3>
+            <p id="monthlyPayment"></p>
+        </div>
+        <div class="result-card">
+            <h3>Total Interest</h3>
+            <p id="totalInterest"></p>
+        </div>
+        <div class="result-card">
+            <h3>Payoff Date</h3>
+            <p id="payoffDate"></p>
+        </div>
+    </div>
+    <div class="table-container">
+        <table id="amortizationTable">
+            <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Year</th>
+                    <th>Payment</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Remaining Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+{% endblock %}

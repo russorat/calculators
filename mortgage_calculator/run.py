@@ -28,6 +28,6 @@ def cleanup_ngrok():
 if __name__ == '__main__':
     setup_ngrok()
     try:
-        app.run(port=5001)
+        app.run(port=5001, debug=True)
     finally:
         cleanup_ngrok()

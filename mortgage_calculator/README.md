@@ -154,6 +154,51 @@ Response:
 }
 ```
 
+### GET /calculate_percentage_difference
+
+Calculate the percentage difference between two values.
+
+Parameters:
+- `value1` (float): The base value
+- `value2` (float): The comparison value
+
+Example:
+```
+GET /calculate_percentage_difference?value1=100&value2=150
+```
+
+Response:
+```json
+{
+    "value1": 100.0,
+    "value2": 150.0,
+    "absolute_difference": 50.0,
+    "percentage_difference": 50.0,
+    "is_increase": true,
+    "formatted_result": "50.00% increase"
+}
+```
+
+Example with a decrease:
+```
+GET /calculate_percentage_difference?value1=100&value2=75
+```
+
+Response:
+```json
+{
+    "value1": 100.0,
+    "value2": 75.0,
+    "absolute_difference": -25.0,
+    "percentage_difference": -25.0,
+    "is_increase": false,
+    "formatted_result": "25.00% decrease"
+}
+```
+
+Error Responses:
+- 400 Bad Request: If invalid numbers are provided or if value1 is zero
+
 ## Development
 
 To contribute to this project:

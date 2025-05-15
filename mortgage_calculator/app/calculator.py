@@ -1,42 +1,7 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
-from flask_cors import CORS
 from typing import Dict, List
 import math
-import os
-import ngrok
-import logging
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-app = Flask(__name__)
-CORS(app)
-
-def setup_ngrok():
-    try:
-        # Configure ngrok with your auth token
-        listener = ngrok.forward(
-            "localhost:5001",
-            authtoken=os.getenv('NGROK_AUTH_TOKEN'),
-            domain="mortgage.russellsavage.dev"
-        )
-        logger.info(f"ngrok tunnel established at: {listener.url()}")
-        
-    except Exception as e:
-        logger.error(f"Error setting up ngrok: {str(e)}")
-        raise
-
-def cleanup_ngrok():
-    try:
-        ngrok.disconnect()
-        logger.info("Disconnected ngrok tunnel")
-    except Exception as e:
-        logger.error(f"Error disconnecting ngrok tunnel: {str(e)}")
 
 def calculate_mortgage_amortization(principal: float, annual_rate: float, years: int, payment_schedule: str = 'monthly') -> Dict:
     """
@@ -129,64 +94,3 @@ def calculate_mortgage_amortization(principal: float, annual_rate: float, years:
     }
     
     return response
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/calculate_mortgage', methods=['GET'])
-def get_mortgage_calculation():
-    try:
-        # Get parameters from query string
-        principal = float(request.args.get('principal', 0))
-        annual_rate = float(request.args.get('rate', 0))
-        years = int(request.args.get('years', 0))
-        payment_schedule = request.args.get('paymentSchedule', 'monthly')
-        
-        # Validate input
-        if principal <= 0 or annual_rate <= 0 or years <= 0:
-            return jsonify({
-                "error": "Invalid input parameters. All values must be positive numbers."
-            }), 400
-            
-        if payment_schedule not in ['monthly', 'biweekly']:
-            return jsonify({
-                "error": "Invalid payment schedule. Must be 'monthly' or 'biweekly'."
-            }), 400
-            
-        # Calculate amortization schedule
-        result = calculate_mortgage_amortization(principal, annual_rate, years, payment_schedule)
-        return jsonify(result)
-        
-    except (TypeError, ValueError) as e:
-        return jsonify({
-            "error": "Invalid input parameters. Please check the data types and try again.",
-            "details": str(e)
-        }), 400
-
-# Add route for favicon
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(
-        os.path.join(app.root_path, 'static'),
-        'favicon.ico',
-        mimetype='image/vnd.microsoft.icon'
-    )
-
-@app.route('/health')
-def health_check():
-    return jsonify({
-        "status": "healthy",
-        "tunnel_url": ngrok.get_tunnels()[0].url() if ngrok.get_tunnels() else None
-    })
-
-if __name__ == '__main__':
-    # Set up ngrok before starting the Flask app
-    setup_ngrok()
-    
-    try:
-        # Run the Flask app
-        app.run(debug=True, port=5001)
-    finally:
-        # Clean up ngrok when the app stops
-        cleanup_ngrok()

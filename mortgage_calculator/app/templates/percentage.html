@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Percentage Calculator{% endblock %}
+
+{% block content %}
+<h1>Percentage Difference Calculator</h1>
+<div class="calculator-form">
+    <div class="form-group">
+        <label for="value1">First Value:</label>
+        <input type="number" id="value1" step="any" required>
+    </div>
+    <div class="form-group">
+        <label for="value2">Second Value:</label>
+        <input type="number" id="value2" step="any" required>
+    </div>
+    <button id="calculateBtn" class="calculate-btn">Calculate Difference</button>
+</div>
+
+<div id="results" class="results" style="display: none;">
+    <h2>Results</h2>
+    <div class="result-card">
+        <p>Percentage Difference: <span id="percentageDiff" class="highlight"></span></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/percentage.js') }}"></script>
+{% endblock %}
