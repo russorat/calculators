@@ -249,8 +249,8 @@ function downloadResults() {
     const today = new Date();
     const dateStr = today.toISOString().split('T')[0];
     
-    // Create filename with loan amount and date
-    const loanAmount = document.getElementById('principal').value;
+    // Get loan amount from the correct input field
+    const loanAmount = document.getElementById('loanAmount').value;
     const formattedLoanAmount = new Intl.NumberFormat('en-US', {
         style: 'decimal',
         maximumFractionDigits: 0
