@@ -111,8 +111,7 @@ function getPayoffDateMessage(finalDate) {
     const months = finalDate.getMonth() - now.getMonth();
     const totalMonths = years * 12 + months;
     
-    let message = `Expected Payoff Date: <strong>${formatDateLong(finalDate)}</strong> (${formatDate(finalDate)})`;
-    message += `<br>`;
+    let message = `Expected Payoff Date: <strong>${formatDateLong(finalDate)}</strong> (${formatDate(finalDate)}) `;
     
     if (totalMonths > 0) {
         const yearsRemaining = Math.floor(totalMonths / 12);
@@ -144,28 +143,30 @@ async function calculateComparison(principal, rate, years, selectedSchedule) {
         results[schedule] = data.loan_summary;
     }
 
-    // Create comparison HTML
+    // Create comparison HTML with side-by-side layout
     const comparisonHtml = `
         <div class="comparison">
             <h3>Payment Schedule Comparison</h3>
             
-            <div class="payment-option ${selectedSchedule === 'monthly' ? 'selected' : ''}">
-                <div class="label">Monthly Payments</div>
-                <div>
-                    <div>Payment: ${formatCurrency(results.monthly.periodic_payment)}</div>
-                    <div>Total Interest: ${formatCurrency(results.monthly.total_interest)}</div>
-                    <div>Total Amount: ${formatCurrency(results.monthly.total_amount_paid)}</div>
+            <div class="payment-options-container">
+                <div class="payment-option ${selectedSchedule === 'monthly' ? 'selected' : ''}">
+                    <div class="label">Monthly Payments</div>
+                    <div class="payment-details">
+                        <div>Payment: ${formatCurrency(results.monthly.periodic_payment)}</div>
+                        <div>Total Interest: ${formatCurrency(results.monthly.total_interest)}</div>
+                        <div>Total Amount: ${formatCurrency(results.monthly.total_amount_paid)}</div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="comparison-arrow">↓</div>
+                <div class="comparison-arrow">→</div>
 
-            <div class="payment-option ${selectedSchedule === 'biweekly' ? 'selected' : ''}">
-                <div class="label">Bi-weekly Payments</div>
-                <div>
-                    <div>Payment: ${formatCurrency(results.biweekly.periodic_payment)}</div>
-                    <div>Total Interest: ${formatCurrency(results.biweekly.total_interest)}</div>
-                    <div>Total Amount: ${formatCurrency(results.biweekly.total_amount_paid)}</div>
+                <div class="payment-option ${selectedSchedule === 'biweekly' ? 'selected' : ''}">
+                    <div class="label">Bi-weekly Payments</div>
+                    <div class="payment-details">
+                        <div>Payment: ${formatCurrency(results.biweekly.periodic_payment)}</div>
+                        <div>Total Interest: ${formatCurrency(results.biweekly.total_interest)}</div>
+                        <div>Total Amount: ${formatCurrency(results.biweekly.total_amount_paid)}</div>
+                    </div>
                 </div>
             </div>
 
@@ -182,16 +183,9 @@ function calculateSavings(monthly, biweekly) {
     
     return `
         <div style="margin-top: 20px;">
-            <div class="savings ${interestSavings > 0 ? 'positive' : 'negative'}">
-                ${interestSavings > 0 
-                    ? `✓ By choosing bi-weekly payments, you'll save <strong>${formatCurrency(interestSavings)}</strong> in interest!`
-                    : `⚠ Monthly payments would save you ${formatCurrency(-interestSavings)} in interest.`
-                }
-            </div>
-            <div style="margin-top: 10px;">
-                <div class="savings ${interestSavings > 0 ? 'positive' : 'negative'}">
-                    ${timeSavings}
-                </div>
+            <div class="savings positive">
+                <p>✓ By choosing bi-weekly payments, you'll save <strong>${formatCurrency(interestSavings)}</strong> in interest!</p>
+                <p>${timeSavings}</p>
             </div>
         </div>
     `;
@@ -273,22 +267,27 @@ function downloadResults() {
 }
 
 async function calculateMortgage() {
-    const principal = document.getElementById('principal').value;
-    const rate = document.getElementById('rate').value;
-    const years = document.getElementById('years').value;
+    // Get form values
+    const principal = parseFloat(document.getElementById('loanAmount').value);
+    const rate = parseFloat(document.getElementById('interestRate').value);
+    const years = parseInt(document.getElementById('loanTerm').value);
 
-    const errorDiv = document.getElementById('error');
-    const resultsDiv = document.getElementById('results');
-    const downloadButtonContainer = document.getElementById('downloadButtonContainer');
+    // Validate inputs
+    if (isNaN(principal) || isNaN(rate) || isNaN(years)) {
+        alert('Please fill in all fields with valid numbers');
+        return;
+    }
 
     try {
-        const response = await fetch(`/calculate_mortgage?principal=${principal}&rate=${rate}&years=${years}`);
-        const data = await response.json();
+        // Make API call
+        const response = await fetch(
+            `/calculate_mortgage?principal=${principal}&rate=${rate}&years=${years}`
+        );
 
         if (!response.ok) {
             throw new Error(data.error || 'Failed to calculate mortgage');
         }
-
+        const data = await response.json();
         // Calculate payment dates
         const paymentDates = calculatePaymentDates(
             'monthly', // hardcode to monthly
@@ -296,26 +295,30 @@ async function calculateMortgage() {
         );
         const finalPaymentDate = paymentDates[paymentDates.length - 1];
 
-        // Display results
-        errorDiv.classList.add('hidden');
-        resultsDiv.classList.remove('hidden');
-        downloadButtonContainer.classList.remove('hidden');
+        document.getElementById('downloadBtn').removeAttribute('style');
 
-        // Update summary
-        const summary = document.getElementById('summary');
-        summary.innerHTML = `
-            <h3>Loan Summary</h3>
-            <p>Loan Amount: ${formatCurrency(data.loan_summary.loan_amount)}</p>
-            <p>Annual Interest Rate: ${data.loan_summary.annual_interest_rate}%</p>
-            <p>Loan Term: ${data.loan_summary.loan_term_years} years</p>
-            <p>Monthly Payment: ${formatCurrency(data.loan_summary.periodic_payment)}</p>
-            <p>Number of Payments: ${data.loan_summary.number_of_payments}</p>
-            <p>Total Interest: ${formatCurrency(data.loan_summary.total_interest)}</p>
-            <p>Total Amount Paid: ${formatCurrency(data.loan_summary.total_amount_paid)}</p>
-            <div class="payoff-date">
-                ${getPayoffDateMessage(finalPaymentDate)}
+        // Update summary section with new formatting
+        document.getElementById('monthlyPayment').innerHTML = `
+            <div>${formatCurrency(data.loan_summary.monthly_payment)}</div>
+            <div style="font-size: 0.9rem; color: var(--text-secondary);">per month</div>
+        `;
+        
+        document.getElementById('totalInterest').innerHTML = `
+            <div>${formatCurrency(data.loan_summary.total_interest)}</div>
+            <div style="font-size: 0.9rem; color: var(--text-secondary);">total interest paid</div>
+        `;
+
+        // Calculate dates for the amortization schedule
+        const dates = calculatePaymentDates('monthly', data.amortization_schedule.length);
+        const finalDate = dates[dates.length - 1];
+        
+        document.getElementById('payoffDate').innerHTML = `
+            <div>${formatDateLong(finalDate)}</div>
+            <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                ${calculateTimeFromNow(finalDate)}
             </div>
         `;
+        summary.removeAttribute('style');
 
         // Add comparison section
         const comparisonHtml = await calculateComparison(principal, rate, years, 'monthly');
@@ -334,16 +337,54 @@ async function calculateMortgage() {
             </tr>
         `).join('');
 
+        document.getElementById('results').removeAttribute('style');
+
         // Setup the confetti trigger after the table is populated
         setupConfettiTrigger();
 
     } catch (error) {
-        errorDiv.classList.remove('hidden');
-        resultsDiv.classList.add('hidden');
-        downloadButtonContainer.classList.add('hidden');
-        errorDiv.textContent = error.message;
+        console.error('Error:', error);
+        alert('Error calculating mortgage. Please try again.');
     }
 }
+
+// Add this helper function for formatting the time from now
+function calculateTimeFromNow(finalDate) {
+    const now = new Date();
+    const years = finalDate.getFullYear() - now.getFullYear();
+    const months = finalDate.getMonth() - now.getMonth();
+    const totalMonths = years * 12 + months;
+    
+    if (totalMonths <= 0) return '';
+    
+    const yearsRemaining = Math.floor(totalMonths / 12);
+    const monthsRemaining = totalMonths % 12;
+    
+    let timeFromNow = '';
+    if (yearsRemaining > 0) {
+        timeFromNow += `${yearsRemaining} year${yearsRemaining > 1 ? 's' : ''}`;
+        if (monthsRemaining > 0) timeFromNow += ' and ';
+    }
+    if (monthsRemaining > 0) {
+        timeFromNow += `${monthsRemaining} month${monthsRemaining > 1 ? 's' : ''}`;
+    }
+    return `${timeFromNow} from now`;
+}
+
+// Add event listeners when the document loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Add calculate button click handler
+    document.getElementById('calculateBtn').addEventListener('click', calculateMortgage);
+
+    // Add download button click handler
+    document.getElementById('downloadBtn').addEventListener('click', downloadResults);
+
+    // Add calculate button click handler
+    document.getElementById('calculateBtn').addEventListener('click', calculateMortgage);
+
+    // Add download button click handler
+    document.getElementById('downloadBtn').addEventListener('click', downloadResults);
+});
 
 // Initialize date handling for the payment dates
 document.addEventListener('DOMContentLoaded', function() {

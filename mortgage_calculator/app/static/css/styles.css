@@ -40,7 +40,7 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-label {
+.summary .label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
@@ -73,7 +73,7 @@ button {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    width: 100%;
+    width: 25%;
     transition: background-color 0.15s ease-in-out;
 }
 
@@ -105,10 +105,7 @@ button:hover {
 
 .summary p {
     margin: 0.75rem 0;
-    display: flex;
-    justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-color);
 }
 
 .download-button {
@@ -123,6 +120,11 @@ button:hover {
 
 .download-button:hover {
     background-color: #047857;
+}
+
+.download-btn-container {
+    display: flex;
+    justify-content: right;
 }
 
 table {
@@ -166,13 +168,27 @@ tr:hover td {
     gap: 0.5rem;
 }
 
-.payoff-date {
+.summary .payoff-date {
     margin-top: 1.5rem;
     padding: 1rem;
     background-color: #f0fdf4;
     border-radius: 0.5rem;
     color: var(--success-color);
     font-weight: 500;
+    text-align: center;
+}
+
+.savings {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f0fdf4;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.savings.positive {
+    background-color: #f0fdf4;
+    color: var(--success-color);
 }
 
 .hidden {
@@ -295,4 +311,201 @@ tr:hover td {
 .highlight {
     font-size: 1.2em;
     font-weight: bold;
+}
+
+/* Update existing comparison styles */
+.comparison {
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comparison h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* Add new styles for side-by-side layout */
+.payment-options-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.payment-option {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    max-width: 400px;
+}
+
+.payment-option.selected {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.02);
+}
+
+.payment-option .label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--background-color);
+}
+
+.payment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.payment-details div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: var(--background-color);
+    border-radius: 4px;
+}
+
+.comparison-arrow {
+    font-size: 2rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.savings {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.savings.positive {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+}
+
+.savings.negative {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #d32f2f;
+}
+
+/* Add responsive styles */
+@media (max-width: 768px) {
+    .payment-options-container {
+        flex-direction: column;
+    }
+
+    .comparison-arrow {
+        transform: rotate(90deg);
+        margin: 1rem 0;
+    }
+
+    .payment-option {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Add these new styles for the summary section */
+.summary-section {
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-section h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.summary-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.summary-card {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    max-width: 400px;
+}
+
+.summary-card .label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--background-color);
+}
+
+.summary-details {
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.summary-details div {
+    padding: 0.5rem;
+    background-color: var(--background-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+/* Update table container styling to match */
+.table-container {
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* Add responsive styles for summary section */
+@media (max-width: 768px) {
+    .summary-container {
+        flex-direction: column;
+    }
+
+    .summary-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Update existing results container */
+.results {
+    margin-top: 2rem;
+}
+
+/* Remove old result-cards styles if they exist */
+.result-cards {
+    display: none;
 }
