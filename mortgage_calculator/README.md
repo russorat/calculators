@@ -39,8 +39,9 @@ pip install -r requirements.txt
 4. Create a `.env` file in the project root:
 
 ```bash
-NGROK_AUTH_TOKEN=your_ngrok_auth_token_here
+NGROK_AUTH_TOKEN=your_ngrok_authtoken_here
 SECRET_KEY=your_secret_key_here
+NGROK_DOMAIN=your-ngrok-url.ngrok-free.app
 ```
 
 ## Running the Application
@@ -55,7 +56,7 @@ python run.py
 
 The application will be available at:
 - Local: http://localhost:5001
-- Public: https://mortgage.russellsavage.dev (if ngrok is configured)
+- Public: https://your-app.ngrok-free.app (if ngrok is configured)
 
 ### Production Mode
 
@@ -94,7 +95,7 @@ mortgage_calculator/
 
 - `NGROK_AUTH_TOKEN`: Your ngrok authentication token
 - `SECRET_KEY`: Flask secret key for session management
-- `NGROK_DOMAIN`: Your custom ngrok domain (e.g., mortgage.russellsavage.dev)
+- `NGROK_DOMAIN`: Your custom ngrok domain (e.g., your-app.ngrok-free.app)
 
 Create a `.env` file in the project root:
 ```env
