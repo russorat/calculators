@@ -8,14 +8,12 @@ A professional web application that calculates mortgage amortization schedules. 
 - View detailed amortization schedules
 - Export payment schedules to CSV
 - Responsive design for mobile and desktop
-- Custom domain support through ngrok
 - Production-ready with Gunicorn WSGI server
 
 ## Prerequisites
 
 - Python 3.7+
 - pip (Python package installer)
-- ngrok account and authtoken
 
 ## Installation
 
@@ -37,11 +35,8 @@ pip install -r requirements.txt
 ```
 
 4. Create a `.env` file in the project root:
-
 ```bash
-NGROK_AUTH_TOKEN=your_ngrok_authtoken_here
 SECRET_KEY=your_secret_key_here
-NGROK_DOMAIN=your-ngrok-url.ngrok-free.app
 ```
 
 ## Running the Application
@@ -54,9 +49,7 @@ To run the application in development mode:
 python run.py
 ```
 
-The application will be available at:
-- Local: http://localhost:5001
-- Public: https://your-app.ngrok-free.app (if ngrok is configured)
+The application will be available at http://localhost:5001
 
 ### Production Mode
 
@@ -93,15 +86,11 @@ mortgage_calculator/
 
 ### Environment Variables
 
-- `NGROK_AUTH_TOKEN`: Your ngrok authentication token
 - `SECRET_KEY`: Flask secret key for session management
-- `NGROK_DOMAIN`: Your custom ngrok domain (e.g., your-app.ngrok-free.app)
 
 Create a `.env` file in the project root:
 ```env
-NGROK_AUTH_TOKEN=your_ngrok_auth_token_here
 SECRET_KEY=your_secret_key_here
-NGROK_DOMAIN=your-ngrok-url.ngrok-free.app
 ```
 
 ### Gunicorn Settings
@@ -220,5 +209,4 @@ Russell Savage
 ## Acknowledgments
 
 - Flask web framework
-- ngrok for tunnel services
 - Gunicorn WSGI server

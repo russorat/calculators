@@ -52,13 +52,6 @@ def get_mortgage_calculation():
             "details": str(e)
         }), 400
 
-@bp.route('/health')
-def health_check():
-    return jsonify({
-        "status": "healthy",
-        "tunnel_url": ngrok.get_tunnels()[0].url() if ngrok.get_tunnels() else None
-    })
-
 @bp.route('/api/percentage-difference', methods=['GET'])
 def calculate_percentage_difference():
     try:
