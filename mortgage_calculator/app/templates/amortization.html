@@ -1,72 +1,113 @@
 {% extends "base.html" %}
 
-{% block title %}Mortgage Calculator{% endblock %}
+{% block title %}Mortgage Amortization Calculator{% endblock %}
+
+{% block meta_description %}Free mortgage amortization calculator. Calculate monthly payments, total interest, and view complete amortization schedule for your home loan. Compare monthly vs bi-weekly payments.{% endblock %}
+
+{% block og_title %}Mortgage Amortization Calculator{% endblock %}
+{% block og_description %}Calculate your mortgage payments and view detailed amortization schedules. Compare monthly vs bi-weekly payments to see potential savings.{% endblock %}
+
+{% block twitter_title %}Mortgage Amortization Calculator{% endblock %}
+{% block twitter_description %}Calculate your mortgage payments and view detailed amortization schedules. Compare monthly vs bi-weekly payments to see potential savings.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mortgage Amortization Calculator",
+    "description": "Calculate mortgage payments and view complete amortization schedules",
+    "url": "{{ request.url }}",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    },
+    "featureList": [
+        "Monthly payment calculation",
+        "Complete amortization schedule",
+        "Bi-weekly vs monthly payment comparison",
+        "Total interest calculation",
+        "Loan payoff date estimation"
+    ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
-<h1>Mortgage Calculator</h1>
-<div class="calculator-form">
-    <div class="form-group">
-        <label for="loanAmount">Loan Amount ($):</label>
-        <input type="number" id="loanAmount" value="1000000" required min="1">
-    </div>
-    <div class="form-group">
-        <label for="interestRate">Annual Interest Rate (%):</label>
-        <input type="number" id="interestRate" value="6.45" step="0.01" required min="0.01">
-    </div>
-    <div class="form-group">
-        <label for="loanTerm">Loan Term (years):</label>
-        <input type="number" id="loanTerm" value="30" required min="1">
-    </div>
-    <button id="calculateBtn" class="calculate-btn">Calculate</button>
-</div>
+<article class="calculator-container">
+    <h1>Mortgage Amortization Calculator</h1>
+    <p class="calculator-description">
+        Calculate your monthly mortgage payments, view a complete amortization schedule, and compare payment options to find potential savings.
+    </p>
+    
+    <section class="calculator-form" aria-labelledby="calculator-form-heading">
+        <h2 id="calculator-form-heading" class="visually-hidden">Mortgage Calculator Input Form</h2>
+        <div class="form-group">
+            <label for="loanAmount">Loan Amount ($):</label>
+            <input type="number" id="loanAmount" value="1000000" required min="1">
+        </div>
+        <div class="form-group">
+            <label for="interestRate">Annual Interest Rate (%):</label>
+            <input type="number" id="interestRate" value="6.45" step="0.01" required min="0.01">
+        </div>
+        <div class="form-group">
+            <label for="loanTerm">Loan Term (years):</label>
+            <input type="number" id="loanTerm" value="30" required min="1">
+        </div>
+        <button id="calculateBtn" class="calculate-btn">Calculate</button>
+    </section>
 
-<div id="results" class="results" style="display: none;">
-    <div class="summary-section">
-        <h3>Loan Summary</h3>
-        <div class="summary-container">
-            <div class="summary-card">
-                <div class="label">Monthly Payment</div>
-                <div class="summary-details">
-                    <div id="monthlyPayment"></div>
+    <div id="results" class="results" style="display: none;">
+        <div class="summary-section">
+            <h3>Loan Summary</h3>
+            <div class="summary-container">
+                <div class="summary-card">
+                    <div class="label">Monthly Payment</div>
+                    <div class="summary-details">
+                        <div id="monthlyPayment"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="summary-card">
-                <div class="label">Total Interest</div>
-                <div class="summary-details">
-                    <div id="totalInterest"></div>
+                <div class="summary-card">
+                    <div class="label">Total Interest</div>
+                    <div class="summary-details">
+                        <div id="totalInterest"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="summary-card">
-                <div class="label">Payoff Information</div>
-                <div class="summary-details">
-                    <div id="payoffDate"></div>
+                <div class="summary-card">
+                    <div class="label">Payoff Information</div>
+                    <div class="summary-details">
+                        <div id="payoffDate"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="summary" class="summary"></div>
-    <div class="download-btn-container"><button id="downloadBtn" class="download-btn">Download CSV</button></div>
-    <div class="table-container">
-        <h3>Amortization Schedule</h3>
-        <table id="amortizationTable">
-            <thead>
-                <tr>
-                    <th>Payment Date</th>
-                    <th>Year</th>
-                    <th>Payment</th>
-                    <th>Principal</th>
-                    <th>Interest</th>
-                    <th>Remaining Balance</th>
-                </tr>
-            </thead>
-            <tbody id="scheduleBody">
-            </tbody>
-        </table>
+        <div id="summary" class="summary"></div>
+        <div class="download-btn-container"><button id="downloadBtn" class="download-btn">Download CSV</button></div>
+        <div class="table-container">
+            <h3>Amortization Schedule</h3>
+            <table id="amortizationTable">
+                <thead>
+                    <tr>
+                        <th>Payment Date</th>
+                        <th>Year</th>
+                        <th>Payment</th>
+                        <th>Principal</th>
+                        <th>Interest</th>
+                        <th>Remaining Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</article>
 {% endblock %}
 
 {% block scripts %}

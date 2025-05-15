@@ -1,27 +1,66 @@
 {% extends "base.html" %}
 
-{% block title %}Percentage Calculator{% endblock %}
+{% block title %}Percentage Difference Calculator{% endblock %}
+
+{% block meta_description %}Free percentage difference calculator. Calculate the percentage change between two values quickly and easily. Perfect for financial calculations and data analysis.{% endblock %}
+
+{% block og_title %}Percentage Difference Calculator{% endblock %}
+{% block og_description %}Calculate percentage differences between two values. Get instant results with our easy-to-use calculator.{% endblock %}
+
+{% block twitter_title %}Percentage Difference Calculator{% endblock %}
+{% block twitter_description %}Calculate percentage differences between two values. Get instant results with our easy-to-use calculator.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Percentage Difference Calculator",
+    "description": "Calculate percentage differences between two values",
+    "url": "{{ request.url }}",
+    "applicationCategory": "CalculatorApplication",
+    "operatingSystem": "Any",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    },
+    "featureList": [
+        "Percentage difference calculation",
+        "Instant results",
+        "Positive/negative change indication"
+    ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
-<h1>Percentage Difference Calculator</h1>
-<div class="calculator-form">
-    <div class="form-group">
-        <label for="value1">First Value:</label>
-        <input type="number" id="value1" step="any" required>
-    </div>
-    <div class="form-group">
-        <label for="value2">Second Value:</label>
-        <input type="number" id="value2" step="any" required>
-    </div>
-    <button id="calculateBtn" class="calculate-btn">Calculate Difference</button>
-</div>
+<article class="calculator-container">
+    <h1>Percentage Difference Calculator</h1>
+    <p class="calculator-description">
+        Calculate the percentage difference between two values. Perfect for comparing changes in values, prices, or any numerical data.
+    </p>
+    
+    <section class="calculator-form" aria-labelledby="calculator-form-heading">
+        <h2 id="calculator-form-heading" class="visually-hidden">Percentage Calculator Input Form</h2>
+        <div class="form-group">
+            <label for="value1">First Value:</label>
+            <input type="number" id="value1" step="any" required>
+        </div>
+        <div class="form-group">
+            <label for="value2">Second Value:</label>
+            <input type="number" id="value2" step="any" required>
+        </div>
+        <button id="calculateBtn" class="calculate-btn">Calculate Difference</button>
+    </section>
 
-<div id="results" class="results" style="display: none;">
-    <h2>Results</h2>
-    <div class="result-card">
-        <p>Percentage Difference: <span id="percentageDiff" class="highlight"></span></p>
+    <div id="results" class="results" style="display: none;">
+        <h2>Results</h2>
+        <div class="result-card">
+            <p>Percentage Difference: <span id="percentageDiff" class="highlight"></span></p>
+        </div>
     </div>
-</div>
+</article>
 {% endblock %}
 
 {% block scripts %}

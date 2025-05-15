@@ -71,3 +71,11 @@ def calculate_percentage_difference():
     except (TypeError, ValueError):
         return jsonify({'error': 'Invalid input values'}), 400
 
+@bp.route('/privacy')
+def privacy_policy():
+    return render_template('privacy.html')
+
+@bp.route('/terms')
+def terms_of_service():
+    return render_template('terms.html')
+

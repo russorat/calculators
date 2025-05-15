@@ -21,7 +21,6 @@ body {
 }
 
 h1 {
-    color: var(--text-color);
     text-align: center;
     margin-bottom: 2rem;
     font-size: 2.25rem;
@@ -508,4 +507,119 @@ tr:hover td {
 /* Remove old result-cards styles if they exist */
 .result-cards {
     display: none;
+}
+
+/* Accessibility and SEO-friendly styles */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.calculator-description {
+    max-width: 800px;
+    margin: 1rem auto 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Footer styles */
+footer {
+    margin-top: 3rem;
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+/* Privacy Policy Styles */
+.policy-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.policy-container h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.last-updated {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.policy-section {
+    margin-bottom: 2rem;
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.policy-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.policy-section p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.policy-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.policy-section li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.policy-section li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.policy-section a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.policy-section a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .policy-container {
+        padding: 1rem;
+    }
+
+    .policy-section {
+        padding: 1rem;
+    }
 }

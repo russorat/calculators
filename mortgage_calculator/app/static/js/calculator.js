@@ -184,7 +184,7 @@ function calculateSavings(monthly, biweekly) {
     return `
         <div style="margin-top: 20px;">
             <div class="savings positive">
-                <p>✓ By choosing bi-weekly payments, you'll save <strong>${formatCurrency(interestSavings)}</strong> in interest!</p>
+                <p>By choosing bi-weekly payments, you'll save <strong>${formatCurrency(interestSavings)}</strong> in interest!</p>
                 <p>${timeSavings}</p>
             </div>
         </div>

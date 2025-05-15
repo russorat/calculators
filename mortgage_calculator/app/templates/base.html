@@ -3,29 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Dynamic SEO Meta Tags -->
     <title>{% block title %}{% endblock %} - Financial Calculators</title>
+    <meta name="description" content="{% block meta_description %}Free online financial calculators for mortgage amortization and percentage calculations.{% endblock %}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{% block og_title %}{% endblock %} - Financial Calculators">
+    <meta property="og:description" content="{% block og_description %}{% endblock %}">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="{{ request.url }}">
+    <meta name="twitter:title" content="{% block twitter_title %}{% endblock %} - Financial Calculators">
+    <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Additional head content -->
     {% block extra_head %}{% endblock %}
+    
+    <!-- Structured Data -->
+    {% block structured_data %}{% endblock %}
 </head>
 <body>
     <div class="container">
         <header>
-            <nav class="main-nav">
-                <div class="nav-brand">Financial Calculators</div>
+            <nav class="main-nav" aria-label="Main navigation">
+                <div class="nav-brand">
+                    <h1>Financial Calculators</h1>
+                </div>
                 <div class="nav-links">
-                    <a href="{{ url_for('main.amortization_page') }}" class="nav-link {% if request.endpoint == 'amortization_page' %}active{% endif %}">
+                    <a href="{{ url_for('main.amortization_page') }}" 
+                       class="nav-link {% if request.endpoint == 'main.amortization_page' %}active{% endif %}"
+                       aria-current="{% if request.endpoint == 'main.amortization_page' %}page{% endif %}">
                         Mortgage Amortization
                     </a>
-                    <a href="{{ url_for('main.percentage_page') }}" class="nav-link {% if request.endpoint == 'percentage_page' %}active{% endif %}">
+                    <a href="{{ url_for('main.percentage_page') }}" 
+                       class="nav-link {% if request.endpoint == 'main.percentage_page' %}active{% endif %}"
+                       aria-current="{% if request.endpoint == 'main.percentage_page' %}page{% endif %}">
                         Percentage Calculator
                     </a>
                 </div>
             </nav>
         </header>
 
-        <main>
+        <main id="main-content">
             {% block content %}{% endblock %}
         </main>
+
+        <footer>
+            <nav aria-label="Footer navigation">
+                <a href="{{ url_for('main.privacy_policy') }}" class="footer-link">Privacy Policy</a>
+                <a href="{{ url_for('main.terms_of_service') }}" class="footer-link">Terms of Service</a>
+                <a href="https://github.com/russorat/calculators" class="footer-link">Contact</a>
+            </nav>
+        </footer>
     </div>
 
     {% block scripts %}{% endblock %}
